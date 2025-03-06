@@ -52,7 +52,6 @@ def finding_animal(animals: List[Animal], user_id_choice: int) -> Animal | None:
     return None
 
 def animal_modification(animals: List[Animal], user_id_choice: int) -> str:
-    # found = False
     animal = finding_animal(animals, user_id_choice)
 
     if animal is None:
@@ -83,7 +82,6 @@ def animal_modification(animals: List[Animal], user_id_choice: int) -> str:
     else:
         print("Niepoprawny wybór")
 
-    found = True
     return f"Zakutalizowano dane zwierzęcia:\n {animal}"
           
 
@@ -145,9 +143,6 @@ def main():
         else:
             print("Nieprawidłowy wybór")
         
-
-
-
 
 if __name__ == '__main__':
     main()
