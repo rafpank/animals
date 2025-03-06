@@ -12,7 +12,7 @@ class Animal:
 
 
     def __str__(self):
-        return f'id {self.id}. {self.species}: {self.name} {self.age} years old, {self.gender} {self.colour}, {self.weight}'
+        return f'id {self.id}. Zwierze: {self.species} to jest {self.gender} i ma na imię {self.name} skończył już {self.age} lat, jest {self.colour}  i waży {self.weight} kg'
     
 
     def __repr__(self):
@@ -61,8 +61,16 @@ def main():
         if choice == 1:
             new_animal = creating_animal(animals)
             animals.append(new_animal)
-            print("Dodano poniższe zwierzę:\n", new_animal)
-            print(animals)
+            print(f"Dodano poniższe zwierzę:\n {new_animal}\n")
+            
+
+        elif choice == 2:
+            if animals:
+                print("\nLista zwierząt:")
+                for animal in animals:
+                    print(animal)
+            else:
+                print("Brak zwierząt w bazie \n")
 
         else:
             break
