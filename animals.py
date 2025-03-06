@@ -12,7 +12,7 @@ class Animal:
 
 
     def __str__(self):
-        return f'id {self.id}. Zwierze: {self.species} to jest {self.gender} i ma na imię {self.name} skończył już {self.age} lat, jest {self.colour}  i waży {self.weight} kg'
+        return f'id {self.id}. Zwierze to {self.gender} gatunku: {self.species} ma na imię {self.name} skończył(a) już {self.age} lat, ma kolor {self.colour}  i waży {self.weight} kg'
     
 
     def __repr__(self):
@@ -20,7 +20,7 @@ class Animal:
         
 
 def menu_printing() -> None:
-    print("1: Dodaj nowe zwierzę")
+    print("\n1: Dodaj nowe zwierzę")
     print("2: Wyświetl wszystkie zwierzęta")
     print("3: Zmodyfikuj dane wybranego zwierzęcia")
     print("4: Usuń zwierzę z biblioteki")
@@ -45,16 +45,76 @@ def creating_animal(animals: List[Animal]) -> Animal:
     id = find_next_id(animals)
     return Animal(id, species, name, age, gender, colour, weight)
 
+def finding_animal(animals: List[Animal], user_id_choice: int) -> Animal | None:
+    for animal in animals:
+        if animal.id == user_id_choice:
+            return animal
+    return None
 
+def animal_modification(animals: List[Animal], user_id_choice: int) -> str:
+    # found = False
+    animal = finding_animal(animals, user_id_choice)
+
+    if animal is None:
+        return "Nie znaleziono zwierzęcia o podanym ID"  
+  
+    print(f"Wybrane zwierzę to: \n{animal}")
+
+    print("\nKtóre dane chcesz zmienić?")
+    print("1: Gatunek\n2: Imię\n3: Wiek\n4: Płeć\n5: Kolor\n6: Waga\n7: Anuluj wybór")
+    field_choice = int(input("Wpisz numer pola: "))
+
+    new_value = input("Podaj nową wartość: ").strip()
+
+    if field_choice == 1:
+        animal.species = new_value.lower()
+    elif field_choice == 2:
+        animal.name = new_value.capitalize()
+    elif field_choice == 3:
+        animal.age = int(new_value)
+    elif field_choice == 4:
+        animal.gender = new_value.lower()
+    elif field_choice == 5:
+        animal.colour = new_value.lower()
+    elif field_choice == 6:
+        animal.weight = float(new_value)
+    elif field_choice == 7:
+        return "Anulowano wybór"
+    else:
+        print("Niepoprawny wybór")
+
+    found = True
+    return f"Zakutalizowano dane zwierzęcia:\n {animal}"
+          
+
+def deleting_animal(animals: List[Animal], user_id_choice: int) -> str:
+    animal = finding_animal(animals, user_id_choice)
+
+    if animal is None:
+        return "Nie znaleziono zwierzęcia o podanym ID"
+   
+    user_aproval = input(f"Czy potwierdzasz chęć usunięcia {animal} z bazy? [t/n]: ").lower()
+    if user_aproval == 't':
+        animals.remove(animal)
+        return f"Pozstała lista zwierząt: {animals}"
+    else:
+        print("Anulowano wybór")
+    
+
+    return animals
 
 
 def main():
-    animals = []
+    animals = [
+        Animal(id=1, species='kot', name='Pączka', age=11, gender='samiczka', colour='szary', weight=4.0),
+        Animal(id=2, species='pies', name='Teddy', age=2, gender='samiec', colour='biało-brązowy', weight=5.0)
+    ]
+    
     while True:
         menu_printing()
         try:
-            choice = int(input('Co chcesz zrobić, wpisz odpowiednią cyfrę: '))
-        except:
+            choice = int(input('Co chcesz zrobić, wpisz odpowiednią cyfrę:\n'))
+        except ValueError:
             print("Błąd! Wpisz liczbę od 1 do 5")
             continue
 
@@ -62,18 +122,28 @@ def main():
             new_animal = creating_animal(animals)
             animals.append(new_animal)
             print(f"Dodano poniższe zwierzę:\n {new_animal}\n")
-            
-
+        
         elif choice == 2:
             if animals:
-                print("\nLista zwierząt:")
+                print("Lista zwierząt:")
                 for animal in animals:
                     print(animal)
             else:
-                print("Brak zwierząt w bazie \n")
+                print("Brak zwierząt w bazie")
+        
+        elif choice == 3:
+            user_id = int(input('Podaj ID zwierzęcia, którego dane chcesz zmodyfikować: '))
+            print(animal_modification(animals, user_id))
+
+        elif choice == 4:
+            user_id = int(input("Które zwierzę chcesz usunąć? Podaj nr ID: "))
+            print(deleting_animal(animals, user_id))
+
+        elif choice == 5:
+            break
 
         else:
-            break
+            print("Nieprawidłowy wybór")
         
 
 
