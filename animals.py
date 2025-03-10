@@ -17,6 +17,12 @@ class Animal:
 
     def __repr__(self):
         return f"Animal(id={self.id!r}, species={self.species!r}, name={self.name!r}, age={self.age!r}, gender={self.gender!r}, colour={self.colour!r}, weight={self.weight!r})"
+
+    def __eq__(self, value):
+        return self.weight == value.weight
+    
+    def __gt__(self, value):
+        return self.weight > value.weight
         
 
 def menu_printing() -> None:
